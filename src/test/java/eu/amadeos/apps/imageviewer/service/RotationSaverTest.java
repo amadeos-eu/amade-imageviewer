@@ -9,23 +9,33 @@ import org.junit.jupiter.api.io.TempDir;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class RotationSaverTest {
     @TempDir
     Path dir;
 
     private final ImageLoader loader = new ImageLoader();
+
+    /** The tests that run the real jpegtran skip themselves where it is not installed (libjpeg-turbo-progs). */
+    private static void assumeJpegtran() {
+        boolean installed = Stream.of(System.getenv().getOrDefault("PATH", "").split(File.pathSeparator))
+                .anyMatch(dir -> !dir.isEmpty() && Files.isExecutable(Path.of(dir, "jpegtran")));
+        assumeTrue(installed, "jpegtran is not installed: sudo apt install libjpeg-turbo-progs");
+    }
 
     private static boolean red(int rgb) {
         return (rgb >> 16 & 0xff) > 200 && (rgb & 0xff) < 80;
@@ -51,6 +61,7 @@ class RotationSaverTest {
     // --8<-- [start:jpegtran-test]
     @Test
     void jpegIsTurnedByJpegtranAndItsOrientationReset() throws Exception {
+        assumeJpegtran();
         Path file = TestImages.jpeg(dir.resolve("b.jpg"), TestImages.halves(64, 32),
                 new TestImages.Exif().camera("Canon", "EOS").orientation(6).build());
         boolean trimmed = new RotationSaver(CommandRunner.system(), loader)
@@ -68,6 +79,7 @@ class RotationSaverTest {
 
     @Test
     void sizesThatAreNoBlockMultipleAreTrimmed() throws Exception {
+        assumeJpegtran();
         Path file = TestImages.jpeg(dir.resolve("c.jpg"), TestImages.halves(70, 30));
         boolean trimmed = new RotationSaver(CommandRunner.system(), loader)
                 .save(file, Orientation.NORMAL, Orientation.ROTATE_90);
