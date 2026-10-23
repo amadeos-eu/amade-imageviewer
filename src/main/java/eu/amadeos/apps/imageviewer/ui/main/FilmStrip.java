@@ -17,6 +17,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.List;
@@ -26,7 +27,8 @@ import java.util.function.IntConsumer;
 /** The row of small pictures under the big one. A click shows that picture. */
 public final class FilmStrip extends JComponent {
     private static final int CELL_W = Thumbnails.SIZE + 12;
-    private static final int CELL_H = Thumbnails.SIZE * 3 / 4 + 12;
+    // Thumbnails are up to SIZE high (square pictures, portraits), so the cell is too.
+    private static final int CELL_H = Thumbnails.SIZE + 12;
 
     private final DefaultListModel<Path> model = new DefaultListModel<>();
     private final JList<Path> list = new JList<>(model);
@@ -53,7 +55,17 @@ public final class FilmStrip extends JComponent {
             }
         });
         JScrollPane scroll = new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED) {
+            // JScrollPane leaves the scrollbar out of its preferred height when the list could fit, so with many
+            // pictures the bar would cover the bottom of the cells. Always keep room for it below the row.
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension size = super.getPreferredSize();
+                Insets in = getInsets();
+                size.height = in.top + CELL_H + getHorizontalScrollBar().getPreferredSize().height + in.bottom;
+                return size;
+            }
+        };
         scroll.setBorder(AmadeUI.sunken());
         scroll.getHorizontalScrollBar().setUnitIncrement(CELL_W);
         add(scroll, BorderLayout.CENTER);
@@ -82,6 +94,10 @@ public final class FilmStrip extends JComponent {
         } finally {
             updating = false;
         }
+    }
+
+    JScrollPane scrollPane() {
+        return (JScrollPane) getComponent(0);
     }
 
     JList<Path> thumbnailList() {
