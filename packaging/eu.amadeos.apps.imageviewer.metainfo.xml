@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata of amade-imageviewer, installed as /usr/share/metainfo/eu.amadeos.apps.imageviewer.metainfo.xml.
+     amadeOS Software shows it for the installed package; a repository's appstream-generator reads it too. -->
+<component type="desktop-application">
+  <id>eu.amadeos.apps.imageviewer</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>EUPL-1.2</project_license>
+
+  <name>amadeOS Image Viewer</name>
+  <name xml:lang="de">amadeOS Bildbetrachter</name>
+  <name xml:lang="fr">amadeOS Visionneuse d'images</name>
+  <name xml:lang="es">amadeOS Visor de imágenes</name>
+  <name xml:lang="it">amadeOS Visualizzatore di immagini</name>
+
+  <summary>View photos, browse folders and show slideshows</summary>
+  <summary xml:lang="de">Fotos ansehen, Ordner durchblättern und Diashows zeigen</summary>
+  <summary xml:lang="fr">Regarder des photos, parcourir des dossiers et lancer des diaporamas</summary>
+  <summary xml:lang="es">Ver fotos, recorrer carpetas y mostrar presentaciones</summary>
+  <summary xml:lang="it">Guardare foto, sfogliare cartelle e mostrare presentazioni</summary>
+
+  <description>
+    <p>amade-imageviewer is the image viewer of the amadeOS desktop. It shows the pictures of a folder one at a time or as a slideshow, and on request tells what a photo's metadata knows: camera, exposure, title, keywords and where it was taken.</p>
+    <p xml:lang="de">amade-imageviewer ist der Bildbetrachter des amadeOS-Desktops. Er zeigt die Bilder eines Ordners einzeln oder als Diashow und auf Wunsch, was die Metadaten eines Fotos wissen: Kamera, Belichtung, Titel, Stichwörter und wo es aufgenommen wurde.</p>
+    <p xml:lang="fr">amade-imageviewer est la visionneuse d'images du bureau amadeOS. Elle montre les images d'un dossier une à une ou en diaporama et, sur demande, ce que disent les métadonnées d'une photo : appareil, exposition, titre, mots-clés et lieu de prise de vue.</p>
+    <p xml:lang="es">amade-imageviewer es el visor de imágenes del escritorio amadeOS. Muestra las imágenes de una carpeta una a una o como presentación y, si se pide, lo que saben los metadatos de una foto: cámara, exposición, título, palabras clave y dónde se tomó.</p>
+    <p xml:lang="it">amade-imageviewer è il visualizzatore di immagini del desktop amadeOS. Mostra le immagini di una cartella una alla volta o come presentazione e, su richiesta, ciò che sanno i metadati di una foto: fotocamera, esposizione, titolo, parole chiave e luogo dello scatto.</p>
+    <ul>
+      <li>Browse a folder with a film strip; zoom, rotate and flip; JPEG rotations are saved without loss</li>
+      <li xml:lang="de">Ordner mit Filmstreifen durchblättern; zoomen, drehen und spiegeln; Drehungen von JPEGs werden verlustfrei gespeichert</li>
+      <li xml:lang="fr">Parcourir un dossier avec une pellicule ; zoomer, pivoter et retourner ; les rotations des JPEG sont enregistrées sans perte</li>
+      <li xml:lang="es">Recorrer una carpeta con una tira de miniaturas; ampliar, girar y voltear; los giros de JPEG se guardan sin pérdida</li>
+      <li xml:lang="it">Sfogliare una cartella con una striscia di miniature; ingrandire, ruotare e riflettere; le rotazioni dei JPEG si salvano senza perdita</li>
+      <li>Full screen and slideshow with pause, shuffle and loop</li>
+      <li xml:lang="de">Vollbild und Diashow mit Pause, Zufallsreihenfolge und Endlosschleife</li>
+      <li xml:lang="fr">Plein écran et diaporama avec pause, ordre aléatoire et boucle</li>
+      <li xml:lang="es">Pantalla completa y presentación con pausa, orden aleatorio y repetición</li>
+      <li xml:lang="it">Schermo intero e presentazione con pausa, ordine casuale e ripetizione</li>
+      <li>An optional sidebar with EXIF, IPTC and XMP: camera, exposure, title, keywords, author and copyright</li>
+      <li xml:lang="de">Eine Seitenleiste auf Wunsch mit EXIF, IPTC und XMP: Kamera, Belichtung, Titel, Stichwörter, Urheber und Copyright</li>
+      <li xml:lang="fr">Un panneau optionnel avec EXIF, IPTC et XMP : appareil, exposition, titre, mots-clés, auteur et copyright</li>
+      <li xml:lang="es">Un panel opcional con EXIF, IPTC y XMP: cámara, exposición, título, palabras clave, autor y copyright</li>
+      <li xml:lang="it">Un pannello opzionale con EXIF, IPTC e XMP: fotocamera, esposizione, titolo, parole chiave, autore e copyright</li>
+      <li>Where a photo was taken on an OpenStreetMap map, which loads only when you ask for it</li>
+      <li xml:lang="de">Wo ein Foto aufgenommen wurde, auf einer OpenStreetMap-Karte, die erst auf Wunsch lädt</li>
+      <li xml:lang="fr">Le lieu de prise de vue sur une carte OpenStreetMap, chargée seulement à la demande</li>
+      <li xml:lang="es">Dónde se tomó una foto en un mapa de OpenStreetMap, que solo se carga cuando se pide</li>
+      <li xml:lang="it">Il luogo dello scatto su una mappa OpenStreetMap, caricata solo su richiesta</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">amade-imageviewer.desktop</launchable>
+  <icon type="stock">amade-imageviewer</icon>
+  <categories>
+    <category>Graphics</category>
+    <category>Viewer</category>
+    <category>Photography</category>
+  </categories>
+
+  <url type="homepage">https://github.com/datazuul/amade-imageviewer</url>
+  <url type="bugtracker">https://github.com/datazuul/amade-imageviewer/issues</url>
+  <developer id="eu.amadeos">
+    <name>amadeOS Project</name>
+  </developer>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>A photo with the information sidebar and the film strip</caption>
+      <caption xml:lang="de">Ein Foto mit der Info-Seitenleiste und dem Filmstreifen</caption>
+      <caption xml:lang="fr">Une photo avec le panneau d'informations et la pellicule</caption>
+      <caption xml:lang="es">Una foto con el panel de información y la tira de miniaturas</caption>
+      <caption xml:lang="it">Una foto con il pannello informazioni e la striscia di miniature</caption>
+      <image>https://raw.githubusercontent.com/datazuul/amade-imageviewer/main/docs/screenshots/amade-imageviewer.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Full screen with the slideshow controls</caption>
+      <caption xml:lang="de">Vollbild mit der Diashow-Leiste</caption>
+      <caption xml:lang="fr">Plein écran avec les commandes du diaporama</caption>
+      <caption xml:lang="es">Pantalla completa con los controles de la presentación</caption>
+      <caption xml:lang="it">Schermo intero con i comandi della presentazione</caption>
+      <image>https://raw.githubusercontent.com/datazuul/amade-imageviewer/main/docs/screenshots/amade-imageviewer-fullscreen.png</image>
+    </screenshot>
+  </screenshots>
+
+  <provides>
+    <binary>amade-imageviewer</binary>
+    <mediatype>image/jpeg</mediatype>
+    <mediatype>image/png</mediatype>
+    <mediatype>image/gif</mediatype>
+    <mediatype>image/bmp</mediatype>
+    <mediatype>image/tiff</mediatype>
+    <mediatype>image/webp</mediatype>
+  </provides>
+  <content_rating type="oars-1.1"/>
+</component>

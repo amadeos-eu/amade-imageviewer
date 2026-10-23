@@ -1,0 +1,25 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=amadeOS Image Viewer
+Name[de]=amadeOS Bildbetrachter
+Name[fr]=amadeOS Visionneuse d'images
+Name[es]=amadeOS Visor de imágenes
+Name[it]=amadeOS Visualizzatore di immagini
+GenericName=Image Viewer
+GenericName[de]=Bildbetrachter
+GenericName[fr]=Visionneuse d'images
+GenericName[es]=Visor de imágenes
+GenericName[it]=Visualizzatore di immagini
+Comment=View photos, browse folders and show slideshows
+Comment[de]=Fotos ansehen, Ordner durchblättern und Diashows zeigen
+Comment[fr]=Regarder des photos, parcourir des dossiers et lancer des diaporamas
+Comment[es]=Ver fotos, recorrer carpetas y mostrar presentaciones
+Comment[it]=Guardare foto, sfogliare cartelle e mostrare presentazioni
+Icon=amade-imageviewer
+Exec=/usr/bin/amade-imageviewer %F
+Terminal=false
+Categories=Graphics;Viewer;Photography;2DGraphics;RasterGraphics;
+MimeType=image/jpeg;image/png;image/gif;image/bmp;image/x-bmp;image/vnd.wap.wbmp;image/tiff;image/webp;
+Keywords=image;picture;photo;viewer;slideshow;exif;gps;Bild;Foto;Diashow;
+StartupNotify=true
