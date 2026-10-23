@@ -1,0 +1,184 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'eu.amadeos'
+version = '0.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+application {
+    mainClass = 'eu.amadeos.apps.imageviewer.bootstrap.AmadeImageViewerApplication'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    // Theme, Motif look, start-up and XDG helpers shared by all amadeOS applications.
+    // With ../amade-commons checked out, settings.gradle builds that checkout instead (composite build).
+    implementation 'com.github.datazuul:amade-commons:9dba631075'
+    // EXIF, IPTC and XMP of JPEG, PNG, TIFF, WebP, HEIF and camera raw files.
+    implementation 'com.drewnoakes:metadata-extractor:2.21.0'
+    // ImageIO readers for WebP and for JPEGs the JDK cannot read (CMYK, broken colour profiles).
+    runtimeOnly 'com.twelvemonkeys.imageio:imageio-webp:3.15.2'
+    runtimeOnly 'com.twelvemonkeys.imageio:imageio-jpeg:3.15.2'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.5.18'
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    // Tests compare English texts, whatever the language of the build machine.
+    systemProperty 'user.language', 'en'
+    systemProperty 'user.country', 'US'
+}
+
+// The TwelveMonkeys plugins each register their readers in META-INF/services; in the fat jar those files
+// would overwrite each other, so they are joined here and the joined copies go into the jar.
+def mergedServices = layout.buildDirectory.dir('merged-services')
+tasks.register('mergeServices') {
+    inputs.files(configurations.runtimeClasspath)
+    outputs.dir(mergedServices)
+    doLast {
+        def target = mergedServices.get().dir('META-INF/services').asFile
+        delete(target)
+        target.mkdirs()
+        Map<String, Set<String>> services = [:].withDefault { new LinkedHashSet<String>() }
+        configurations.runtimeClasspath.files.findAll { it.name.endsWith('.jar') }.each { jarFile ->
+            zipTree(jarFile).matching { include 'META-INF/services/*' }.each { file ->
+                file.readLines('UTF-8').collect { it.replaceAll('#.*', '').strip() }.findAll { it }
+                        .each { services[file.name] << it }
+            }
+        }
+        services.each { name, lines -> new File(target, name).text = lines.join('\n') + '\n' }
+    }
+}
+
+jar {
+    dependsOn 'mergeServices'
+    archiveBaseName = 'amade-imageviewer'
+    manifest {
+        attributes(
+            'Main-Class': 'eu.amadeos.apps.imageviewer.bootstrap.AmadeImageViewerApplication',
+            'Implementation-Title': 'amade-imageviewer',
+            'Implementation-Version': project.version
+        )
+    }
+    from(mergedServices)
+    from({
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }) {
+        exclude 'META-INF/services/*'
+    }
+    // Signed dependency jars would otherwise invalidate the fat jar.
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('deb') {
+    dependsOn jar
+    description = 'Builds a standard Debian (.deb) package for amade-imageviewer'
+    group = 'distribution'
+
+    doLast {
+        def buildDirFile = layout.buildDirectory.get().asFile
+        def stagingDir = new File(buildDirFile, 'deb-staging')
+        delete(stagingDir)
+
+        def optDir = new File(stagingDir, 'opt/amade-imageviewer')
+        def binDir = new File(stagingDir, 'usr/bin')
+        def appDir = new File(stagingDir, 'usr/share/applications')
+        def iconDir = new File(stagingDir, 'usr/share/icons/hicolor/48x48/apps')
+        def docDir = new File(stagingDir, 'usr/share/doc/amade-imageviewer')
+        def debianDir = new File(stagingDir, 'DEBIAN')
+        def distDir = new File(buildDirFile, 'distributions')
+        [optDir, binDir, appDir, iconDir, docDir, debianDir, distDir]*.mkdirs()
+
+        copy {
+            from jar.archiveFile
+            into optDir
+            rename { 'amade-imageviewer.jar' }
+        }
+
+        def launcher = new File(binDir, 'amade-imageviewer')
+        launcher.text = """#!/bin/sh
+exec /usr/bin/java -jar /opt/amade-imageviewer/amade-imageviewer.jar "\$@"
+"""
+        launcher.setExecutable(true, false)
+
+        copy {
+            from 'packaging/amade-imageviewer.desktop'
+            into appDir
+        }
+        // AppStream metadata: name, description and screenshot for amadeOS Software (and a repository's
+        // appstream-generator).
+        copy {
+            from 'packaging/eu.amadeos.apps.imageviewer.metainfo.xml'
+            into new File(stagingDir, "usr/share/metainfo")
+        }
+        copy {
+            from 'src/main/resources/icons/amade-imageviewer.png'
+            into iconDir
+        }
+        copy {
+            from 'LICENSE'
+            into docDir
+            rename { 'copyright' }
+        }
+
+        new File(debianDir, 'control').text = """Package: amade-imageviewer
+Version: ${project.version}
+Section: graphics
+Priority: optional
+Architecture: all
+Depends: openjdk-25-jre | java-runtime (>= 25)
+Recommends: libjpeg-turbo-progs
+Maintainer: amadeOS Project <developers@datazuul.com>
+Description: Image viewer for amadeOS
+ Shows photos and pictures, one at a time or as a slideshow: browse a
+ folder with a film strip, zoom, rotate and flip, full screen, print and
+ copy. An optional sidebar shows the file, the camera settings, title,
+ keywords and copyright from EXIF, IPTC and XMP, and where a photo was
+ taken, on an OpenStreetMap map that loads only when asked to.
+ Part of the amadeOS desktop.
+"""
+
+        def debFile = new File(distDir, "amade-imageviewer_${project.version}_all.deb")
+        def process = new ProcessBuilder('dpkg-deb', '--root-owner-group', '--build',
+                stagingDir.absolutePath, debFile.absolutePath)
+                .redirectErrorStream(true)
+                .start()
+        process.inputStream.eachLine { println it }
+        if (process.waitFor() != 0) {
+            throw new GradleException('dpkg-deb failed')
+        }
+        println "[deb] Created ${debFile.absolutePath}"
+    }
+}
+
+tasks.register('installToAmadeOs') {
+    dependsOn 'deb'
+    description = 'Builds and drops the .deb package into ../amadeos/config/packages.chroot/'
+    group = 'distribution'
+
+    doLast {
+        def targetDir = file('../amadeos/config/packages.chroot')
+        targetDir.mkdirs()
+        def debFile = new File(layout.buildDirectory.get().asFile, "distributions/amade-imageviewer_${project.version}_all.deb")
+        copy {
+            from debFile
+            into targetDir
+        }
+        println "[installToAmadeOs] Copied ${debFile.name} to ${targetDir.absolutePath}"
+    }
+}
