@@ -3,6 +3,7 @@ package eu.amadeos.apps.imageviewer.ui.main;
 import eu.amadeos.apps.imageviewer.domain.Settings;
 import eu.amadeos.commons.i18n.Messages;
 import eu.amadeos.commons.swing.AmadeUI;
+import eu.amadeos.commons.swing.StandardGlyph;
 import eu.amadeos.commons.swing.ToolButtons;
 import eu.amadeos.commons.swing.ToolIcon;
 
@@ -104,7 +105,7 @@ public final class FullScreenWindow extends JFrame {
             if (!updating && seconds.getSelectedItem() instanceof Integer s) controls.setSlideSeconds(s);
         });
         bar.add(seconds);
-        bar.add(ToolButtons.button(action("view.full-screen.leave", ViewerGlyph.LEAVE_FULL_SCREEN, controls::leave)));
+        bar.add(ToolButtons.button(action("view.full-screen.leave", StandardGlyph.LEAVE_FULL_SCREEN, controls::leave)));
         bar.setVisible(false);
         layers.add(bar, JLayeredPane.PALETTE_LAYER);
 
@@ -139,7 +140,7 @@ public final class FullScreenWindow extends JFrame {
         bar.addMouseMotionListener(moves);
     }
 
-    private Action action(String key, ViewerGlyph glyph, Runnable run) {
+    private Action action(String key, ToolIcon.Glyph glyph, Runnable run) {
         AbstractAction action = new AbstractAction(msg.get("tool." + key)) {
             @Override
             public void actionPerformed(ActionEvent e) {
