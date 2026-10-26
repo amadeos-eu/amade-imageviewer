@@ -28,7 +28,7 @@ repositories {
 dependencies {
     // Theme, Motif look, start-up and XDG helpers shared by all amadeOS applications.
     // With ../amade-commons checked out, settings.gradle builds that checkout instead (composite build).
-    implementation 'com.github.datazuul:amade-commons:3d29a85a03'
+    implementation 'com.github.datazuul:amade-commons:db3a242d57'
     // EXIF, IPTC and XMP of JPEG, PNG, TIFF, WebP, HEIF and camera raw files.
     implementation 'com.drewnoakes:metadata-extractor:2.21.0'
     // ImageIO readers for WebP and for JPEGs the JDK cannot read (CMYK, broken colour profiles).
