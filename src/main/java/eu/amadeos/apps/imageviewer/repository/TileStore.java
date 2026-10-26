@@ -1,6 +1,7 @@
 package eu.amadeos.apps.imageviewer.repository;
 
 import eu.amadeos.apps.imageviewer.domain.MapTiles;
+import eu.amadeos.commons.net.Network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,7 @@ public class TileStore {
     // --8<-- [start:http]
     /** Downloads with Java's HTTP client, as {@code amade-imageviewer/<version>}. */
     public static Download http(String version) {
-        HttpClient client = HttpClient.newBuilder()
+        HttpClient client = Network.proxy().httpClient()
                 .connectTimeout(Duration.ofSeconds(10))
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
