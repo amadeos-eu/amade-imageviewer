@@ -1,6 +1,6 @@
 # amade-imageviewer
 
-**amade-imageviewer** is the image viewer of the [amadeOS](https://github.com/datazuul/amadeos) desktop: it shows the pictures of a folder one by one, zooms, turns and prints them, plays them as a slideshow and shows what the camera wrote into them in a sidebar, with the place on a map. Built like the other amadeOS applications.
+**amade-imageviewer** is the image viewer of the [amadeOS](https://github.com/amadeos-eu/amadeos) desktop: it shows the pictures of a folder one by one, zooms, turns and prints them, plays them as a slideshow and shows what the camera wrote into them in a sidebar, with the place on a map. Built like the other amadeOS applications.
 
 ![License](https://img.shields.io/badge/license-EUPL--1.2-blue)
 ![Java](https://img.shields.io/badge/Java-25-orange)
@@ -22,7 +22,7 @@
 - **Move to Trash** (Delete), into the desktop trash where the file manager can restore it.
 - **Copy** the picture (Ctrl+C) or its path (Ctrl+Shift+C), and **print** it (Ctrl+P), landscape for wide pictures.
 - Five languages (English, Deutsch, Français, Español, Italiano), following the amadeOS desktop language; *Options → Language* overrides it.
-- Theme colours and Motif look from [amade-commons](https://github.com/datazuul/amade-commons).
+- Theme colours and Motif look from [amade-commons](https://github.com/amadeos-eu/amade-commons).
 
 ## Architecture
 

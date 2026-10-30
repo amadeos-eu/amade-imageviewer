@@ -59,7 +59,7 @@ public class TileStore {
                 .connectTimeout(Duration.ofSeconds(10))
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
-        String agent = "amade-imageviewer/" + version + " (amadeOS; +https://github.com/datazuul/amade-imageviewer)";
+        String agent = "amade-imageviewer/" + version + " (amadeOS; +https://github.com/amadeos-eu/amade-imageviewer)";
         return uri -> {
             HttpRequest request = HttpRequest.newBuilder(uri)
                     .timeout(Duration.ofSeconds(20))
