@@ -56,8 +56,8 @@
     <category>Photography</category>
   </categories>
 
-  <url type="homepage">https://github.com/datazuul/amade-imageviewer</url>
-  <url type="bugtracker">https://github.com/datazuul/amade-imageviewer/issues</url>
+  <url type="homepage">https://github.com/amadeos-eu/amade-imageviewer</url>
+  <url type="bugtracker">https://github.com/amadeos-eu/amade-imageviewer/issues</url>
   <developer id="eu.amadeos">
     <name>amadeOS Project</name>
   </developer>
@@ -69,7 +69,7 @@
       <caption xml:lang="fr">Une photo avec le panneau d'informations et la pellicule</caption>
       <caption xml:lang="es">Una foto con el panel de información y la tira de miniaturas</caption>
       <caption xml:lang="it">Una foto con il pannello informazioni e la striscia di miniature</caption>
-      <image>https://raw.githubusercontent.com/datazuul/amade-imageviewer/main/docs/screenshots/amade-imageviewer.png</image>
+      <image>https://raw.githubusercontent.com/amadeos-eu/amade-imageviewer/main/docs/screenshots/amade-imageviewer.png</image>
     </screenshot>
     <screenshot>
       <caption>Full screen with the slideshow controls</caption>
@@ -77,7 +77,7 @@
       <caption xml:lang="fr">Plein écran avec les commandes du diaporama</caption>
       <caption xml:lang="es">Pantalla completa con los controles de la presentación</caption>
       <caption xml:lang="it">Schermo intero con i comandi della presentazione</caption>
-      <image>https://raw.githubusercontent.com/datazuul/amade-imageviewer/main/docs/screenshots/amade-imageviewer-fullscreen.png</image>
+      <image>https://raw.githubusercontent.com/amadeos-eu/amade-imageviewer/main/docs/screenshots/amade-imageviewer-fullscreen.png</image>
     </screenshot>
   </screenshots>
 
