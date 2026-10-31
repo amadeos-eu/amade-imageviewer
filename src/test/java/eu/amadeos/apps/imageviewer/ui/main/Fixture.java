@@ -5,6 +5,7 @@ import eu.amadeos.apps.imageviewer.TestImages;
 import eu.amadeos.apps.imageviewer.bootstrap.ImageViewerModule;
 import eu.amadeos.apps.imageviewer.metadata.MetadataReader;
 import eu.amadeos.apps.imageviewer.repository.ViewerPreferences;
+import eu.amadeos.apps.imageviewer.service.ImageEditor;
 import eu.amadeos.apps.imageviewer.service.ImageLoader;
 import eu.amadeos.apps.imageviewer.service.RotationSaver;
 import eu.amadeos.apps.imageviewer.service.Trash;
@@ -18,6 +19,7 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Random;
 
 /** A folder of test pictures and the services of a presenter, all synchronous. */
@@ -28,6 +30,10 @@ final class Fixture {
     final Path folder;
     final FakeTicker ticker = new FakeTicker();
     final List<String> browsed = new ArrayList<>();
+    /** The command lines the image editor was started with. */
+    final List<List<String>> edited = new ArrayList<>();
+    /** An installed editor that only records how it was started; set to a missing one before presenter(). */
+    ImageEditor editor = new ImageEditor(Optional.of(Path.of("/usr/bin/amade-imageeditor")), edited::add);
     final ViewerPreferences preferences;
     int exits;
 
@@ -63,7 +69,7 @@ final class Fixture {
         ImageLoader loader = new ImageLoader();
         return new MainPresenter.Services(preferences, loader, new MetadataReader(),
                 new RotationSaver(CommandRunner.system(), loader), new Trash(dir.resolve("Trash"), Clock.systemUTC()),
-                launcher, Runnable::run, Runnable::run, ticker, new Random(3), dir.resolve("Pictures"), () -> exits++);
+                editor, launcher, Runnable::run, Runnable::run, ticker, new Random(3), dir.resolve("Pictures"), () -> exits++);
     }
 
     MainPresenter presenter(MainView view) {

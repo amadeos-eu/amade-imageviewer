@@ -30,6 +30,8 @@ public final class MainMenuBar extends JMenuBar {
     private static final int CTRL = InputEvent.CTRL_DOWN_MASK;
 
     private final Messages msg;
+    /** amade-imageeditor is installed. */
+    private final boolean canEdit;
     private final Map<String, JMenuItem> items = new HashMap<>();
     private final Map<Integer, JRadioButtonMenuItem> seconds = new HashMap<>();
     private boolean updating;
@@ -37,10 +39,12 @@ public final class MainMenuBar extends JMenuBar {
     public MainMenuBar(MainPresenter presenter, Messages msg, LocaleSettings locales) {
         EdtExecutor.requireEdt();
         this.msg = msg;
+        this.canEdit = presenter.canEdit();
         setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         JMenu image = menu("menu.image");
         image.add(item("menu.image.open", key(KeyEvent.VK_O, CTRL), presenter::open));
+        image.add(item("menu.image.edit", key(KeyEvent.VK_E, CTRL), presenter::edit));
         image.add(item("menu.image.save", key(KeyEvent.VK_S, CTRL), presenter::saveRotation));
         image.add(item("menu.image.print", key(KeyEvent.VK_P, CTRL), presenter::print));
         image.addSeparator();
@@ -132,6 +136,8 @@ public final class MainMenuBar extends JMenuBar {
         int position = shown.map(Shown::position).orElse(-1);
         int count = shown.map(Shown::count).orElse(0);
         items.get("menu.image.save").setEnabled(shown.map(Shown::canSave).orElse(false));
+        items.get("menu.image.edit").setEnabled(picture && canEdit);
+        items.get("menu.image.edit").setToolTipText(canEdit ? null : msg.get("menu.image.edit.missing"));
         items.get("menu.go.previous").setEnabled(position > 0);
         items.get("menu.go.first").setEnabled(position > 0);
         items.get("menu.go.next").setEnabled(position >= 0 && position < count - 1);
