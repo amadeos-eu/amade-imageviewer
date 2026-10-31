@@ -37,7 +37,7 @@ class TranslationTest {
                 "menu.help"));
         bar.addAll(List.of("info.map.show", "info.map.always", "info.map.browser", "info.map.copy"));
         groups.put("bar", bar);
-        groups.put("image", List.of("menu.image.open", "menu.image.save", "menu.image.print", "menu.image.trash",
+        groups.put("image", List.of("menu.image.open", "menu.image.edit", "menu.image.save", "menu.image.print", "menu.image.trash",
                 "menu.image.exit"));
         groups.put("edit", List.of("menu.edit.copy", "menu.edit.copy-path"));
         groups.put("view", List.of("menu.view.zoom-in", "menu.view.zoom-out", "menu.view.fit", "menu.view.actual",

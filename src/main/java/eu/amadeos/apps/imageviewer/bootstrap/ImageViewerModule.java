@@ -19,6 +19,7 @@ import eu.amadeos.commons.app.Ui;
 import eu.amadeos.commons.config.AppDirectories;
 import eu.amadeos.commons.config.XdgDirectories;
 import eu.amadeos.commons.desktop.DesktopLauncher;
+import eu.amadeos.apps.imageviewer.service.ImageEditor;
 import eu.amadeos.commons.i18n.LocaleSettings;
 import eu.amadeos.commons.i18n.Messages;
 import eu.amadeos.commons.process.CommandRunner;
@@ -87,7 +88,7 @@ public final class ImageViewerModule extends AbstractModule {
                             MainPresenterHolder holder) {
         MainPresenter presenter = new MainPresenter(window, msg, locales, new MainPresenter.Services(preferences,
                 loader, metadata, new RotationSaver(CommandRunner.system(), loader),
-                new Trash(xdg.dataHome().resolve("Trash"), Clock.systemDefaultZone()), launcher, background, ui,
+                new Trash(xdg.dataHome().resolve("Trash"), Clock.systemDefaultZone()), ImageEditor.system(), launcher, background, ui,
                 new SwingTicker(), new SecureRandom(), xdg.pictures(), () -> System.exit(0)));
         holder.set(presenter);
         return presenter;

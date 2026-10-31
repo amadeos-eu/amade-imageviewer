@@ -274,4 +274,33 @@ class MainPresenterTest {
         assertTrue(view.closed);
         assertEquals(1, fixture.exits);
     }
+
+    @Test
+    void editOpensTheShownPictureInTheImageEditor() throws Exception {
+        start("a.png");
+        assertTrue(presenter.canEdit());
+        edt(() -> presenter.edit());
+        assertEquals(List.of(List.of("/usr/bin/amade-imageeditor", fixture.file("a.png").toString())), fixture.edited);
+        assertEquals(List.of(), view.errors);
+    }
+
+    @Test
+    void editWithoutTheImageEditorExplainsWhatToInstall() throws Exception {
+        fixture.editor = new eu.amadeos.apps.imageviewer.service.ImageEditor(Optional.empty(), fixture.edited::add);
+        presenter = fixture.presenter(view);
+        start("a.png");
+        assertFalse(presenter.canEdit());
+        edt(() -> presenter.edit());
+        assertEquals(List.of(Fixture.MSG.get("error.editor-missing")), view.errors);
+        assertEquals(List.of(), fixture.edited);
+    }
+
+    @Test
+    void editWithoutAPictureBeeps() throws Exception {
+        edt(() -> presenter.start(List.of()));
+        int before = view.beeps;
+        edt(() -> presenter.edit());
+        assertEquals(before + 1, view.beeps);
+        assertEquals(List.of(), fixture.edited);
+    }
 }

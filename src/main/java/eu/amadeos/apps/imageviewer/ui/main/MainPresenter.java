@@ -14,6 +14,7 @@ import eu.amadeos.apps.imageviewer.service.ImageTransforms;
 import eu.amadeos.apps.imageviewer.service.RotationSaver;
 import eu.amadeos.apps.imageviewer.service.Trash;
 import eu.amadeos.commons.desktop.DesktopLauncher;
+import eu.amadeos.apps.imageviewer.service.ImageEditor;
 import eu.amadeos.commons.i18n.Language;
 import eu.amadeos.commons.i18n.LocaleSettings;
 import eu.amadeos.commons.i18n.Messages;
@@ -46,7 +47,7 @@ public final class MainPresenter {
 
     /** What the presenter works with besides the view; one record keeps the constructor readable. */
     public record Services(ViewerPreferences preferences, ImageLoader loader, MetadataReader metadata,
-                           RotationSaver saver, Trash trash, DesktopLauncher launcher, Executor background,
+                           RotationSaver saver, Trash trash, ImageEditor editor, DesktopLauncher launcher, Executor background,
                            Executor ui, Ticker ticker, RandomGenerator random, Path pictures, Runnable exit) {
     }
 
@@ -301,6 +302,30 @@ public final class MainPresenter {
     // --8<-- [end:save]
 
     // ---------------------------------------------------------------- image menu
+
+    /** True if amade-imageeditor is installed, so that "Open in Image Editor" can work. */
+    public boolean canEdit() {
+        return services.editor().available();
+    }
+
+    /** Opens the shown picture in the image editor; a turn not yet saved stays here. */
+    public void edit() {
+        if (shown == null || album.current().isEmpty()) {
+            view.beep();
+            return;
+        }
+        if (!canEdit()) {
+            view.showError(msg.get("error.editor-missing"));
+            return;
+        }
+        Path path = album.current().get();
+        try {
+            services.editor().open(path);
+        } catch (IOException e) {
+            LOG.warn("Could not start the image editor for {}", path, e);
+            view.showError(msg.format("error.editor", e.getMessage()));
+        }
+    }
 
     public void moveToTrash() {
         if (shown == null || album.current().isEmpty()) {

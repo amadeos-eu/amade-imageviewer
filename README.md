@@ -19,6 +19,7 @@
 - **Full screen** (F11, Esc to leave) and **slideshow** (F5): a mouse move shows a control bar with previous, play/pause, next, the interval and leave; it hides again after two seconds. Space pauses and a "Pause" sign appears; the arrow keys jump and start the interval anew. Intervals of 3, 5, 10 or 30 seconds, shuffle and loop in *Options → Slideshow*.
 
   ![Full screen](docs/screenshots/amade-imageviewer-fullscreen.png)
+- **Open in Image Editor** (Ctrl+E) hands the picture to [amade-imageeditor](https://github.com/amadeos-eu/amade-imageeditor) for cropping, straightening, colours and resizing. The entry is greyed out while the editor is not installed.
 - **Move to Trash** (Delete), into the desktop trash where the file manager can restore it.
 - **Copy** the picture (Ctrl+C) or its path (Ctrl+Shift+C), and **print** it (Ctrl+P), landscape for wide pictures.
 - Five languages (English, Deutsch, Français, Español, Italiano), following the amadeOS desktop language; *Options → Language* overrides it.
@@ -34,7 +35,7 @@ Java 25, Swing and Guice; start-up, theme and language come from `AmadeApplicati
 | `domain` | `Album` (the pictures of a folder and the current one), `Orientation` (the eight EXIF orientations as turns and flips), `Slideshow`, `Settings`, `PhotoInfo`, `GeoPosition`, `MapTiles`, `ZoomSteps`, `ImageFiles`, `TitleText` |
 | `metadata` | `MetadataReader` (XMP before IPTC before EXIF) |
 | `repository` | `ViewerPreferences` (`~/.config/amadeos/imageviewer/imageviewer.properties`), `TileStore` (map tiles, cached) |
-| `service` | `ImageLoader`, `ImageTransforms`, `RotationSaver` (`jpegtran`), `ExifOrientation`, `Trash` (the XDG trash) |
+| `service` | `ImageLoader`, `ImageTransforms`, `RotationSaver` (`jpegtran`), `ExifOrientation`, `Trash` (the XDG trash), `ImageEditor` (starts amade-imageeditor) |
 | `ui.main` | window, presenter, menus, `ImageCanvas`, `FilmStrip`, `InfoSidebar` with `InfoRows` and `MapView`, `FullScreenWindow`, `PicturePrinter` |
 
 The presenter knows the window only through the `MainView` interface, and loading runs in the background, so the tests drive the whole viewer (browsing, turning, slideshow, map opt-in) without Swing.
@@ -55,7 +56,6 @@ If `../amade-commons` is checked out next to this repository, Gradle builds agai
 - *Set as Desktop Background*, for the current workspace
 - Animated GIFs and WebPs
 - HEIC pictures from phones
-- Simple editing: crop, brightness and contrast
 - Editing the title, caption and keywords
 
 ## License
